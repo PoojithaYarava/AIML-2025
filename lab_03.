@@ -1,0 +1,350 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPcnt3xH1sj2vDPhqAkV94I",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/PoojithaYarava/AIML-2025/blob/main/lab_03.\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "PART-01:Implement the AI Game Statergy"
+      ],
+      "metadata": {
+        "id": "bGQ_SelmLvJr"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from collections import namedtuple, Counter, defaultdict\n",
+        "import random\n",
+        "import math\n",
+        "import functools\n",
+        "cache = functools.lru_cache(10**6)"
+      ],
+      "metadata": {
+        "id": "RUbozfKBLxEY"
+      },
+      "execution_count": 1,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class Game:\n",
+        "  def actions(self, state):\n",
+        "    \"\"\"Return the collection of the allowable moves from the state\"\"\"\n",
+        "    raise NotImplementedError"
+      ],
+      "metadata": {
+        "id": "S3_dVWfWL4pm"
+      },
+      "execution_count": 2,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def result(self, state, move):\n",
+        "  \"\"\"Return the state that results from making a move from a\"\"\"\n",
+        "  raise NotImplementedError"
+      ],
+      "metadata": {
+        "id": "dnoa_9e2L_Q1"
+      },
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def its_terminal(self, state):\n",
+        "  \"\"\"Return True if this is a final state of a game.\"\"\"\n",
+        "  return not self.actions(state)"
+      ],
+      "metadata": {
+        "id": "hg4fCEzoMDAh"
+      },
+      "execution_count": 4,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def utility(self, state, player):\n",
+        "  \"\"\"Return the value of final state to a player.\"\"\"\n",
+        "  raise NotImplementedError"
+      ],
+      "metadata": {
+        "id": "KmgQaQ-NMH8D"
+      },
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def play_game(game, statergies: dict, verbose=False):\n",
+        "  state=game.initial\n",
+        "  while not game.is_terminal(state):\n",
+        "    player = state.to_move\n",
+        "    move = statergies[player](game, state)\n",
+        "    state = game.result(state, move)\n",
+        "    if verbose:\n",
+        "      print('player',player, 'move:', move)\n",
+        "      print(state)\n",
+        "      return state"
+      ],
+      "metadata": {
+        "id": "SuzqJRu7MKvV"
+      },
+      "execution_count": 6,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "PART-02:Implement The Game Statergy Algorithms.\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "BHgcgloHMP0B"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "1.Implement the Min-Max Search Algorithm"
+      ],
+      "metadata": {
+        "id": "xozjN-OYMTxu"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def minimax_search(game, state):\n",
+        "  player = state.to_move\n",
+        "  def max_value(state):\n",
+        "    if game.its_terminal(state):\n",
+        "      return game.utility(state, player), None\n",
+        "    v, move = -infinity, None\n",
+        "    for a in game.actions(state):\n",
+        "      v2,_ = min_value(game.result(state, a))\n",
+        "      if v2>v:\n",
+        "        v, move = v2, a\n",
+        "        return v, move"
+      ],
+      "metadata": {
+        "id": "Zr1o3e0nMfs1"
+      },
+      "execution_count": 7,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def min_value(state):\n",
+        "  if game.is_terminal(state):\n",
+        "    return game.utility(state, player), None\n",
+        "  v, move = +infinity, None\n",
+        "  for a in game.actions(state):\n",
+        "    v2,_ = max_value(game.result(state, a))\n",
+        "    if v2 < v:\n",
+        "      v, move = v2, a\n",
+        "      return v, move\n",
+        "  return max_value(state)\n",
+        "infinity = math.inf"
+      ],
+      "metadata": {
+        "id": "-fpwVC11MmGw"
+      },
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "2.Alpha-Beta Search Algorithm"
+      ],
+      "metadata": {
+        "id": "ywAwG_2KMo0u"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from re import A\n",
+        "def alphabeta_search(game, state):\n",
+        "  player = state.to_move\n",
+        "  def max_value(state, alpha, beta):\n",
+        "    if game.is_terminal(state):\n",
+        "      return game.utility(state, player), None\n",
+        "      v, move = -infinity, None\n",
+        "      for a in game.actions(state):\n",
+        "        v2, _ = min_value(game.result(state, a), alpha, beta)\n",
+        "        if v2 > v:\n",
+        "          v, move = v2, a\n",
+        "          alpha = max(alpha, v)\n",
+        "          if v >= beta:\n",
+        "            return v, move\n",
+        "            return v, move\n",
+        "def min_value(state, alpha, beta):\n",
+        "  if game.is_terminal(state):\n",
+        "    return game.utility(state, player), None\n",
+        "    v, move = +infinity, None\n",
+        "    for a in game.actions(state):\n",
+        "      v2, _ = max_value(game.result(state, a),alpha, beta)\n",
+        "      if v2 < v:\n",
+        "        v, move = v2, a\n",
+        "        beta = min(beta, v)\n",
+        "        if v <= alpha:\n",
+        "          return v, move\n",
+        "          return v, move\n",
+        "          return max_value(state, -infinity, +infinity)\n"
+      ],
+      "metadata": {
+        "id": "gEpWNSc5Ms4x"
+      },
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "PART-03:Implement The Game Statergy using TicTacToe\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "dOHGTImlMwd2"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "1.Implement TicTocToe game using init, actions, result, is_terminal, utility, display constructors"
+      ],
+      "metadata": {
+        "id": "qdl36sn6M1Cf"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class TicTacToe:\n",
+        "  def __init__(self,height=3, width=3, k=3):\n",
+        "    self.k=k!=k\n",
+        "    self.squares = {(x, y) for x in range(width) for y in range(height)}\n",
+        "    self.initial = Board(height=height, width=width, to_move='X', utility=0)\n",
+        "    def actions(self, board):\n",
+        "      return self.squares --set(board)\n",
+        "      def result(self, board, square):\n",
+        "        player = board.to_move\n",
+        "        board = board.new({square: player}, to_move=('o' if player == 'X' else 'X'))\n",
+        "        win = k_in_row(board, player, square, self.k)\n",
+        "        board.utility = (0 if not win else +1 if player == 'X' else -1)\n",
+        "        return board\n",
+        "        def utility(self, board, player):\n",
+        "          return board.utility if player == 'X' else -board.utility\n",
+        "          def is_terminal(self, board):\n",
+        "            return board.utility != 0 or len(self.squares) == len(board)\n",
+        "            def display(self, board):\n",
+        "              print(board)\n",
+        "              def k_in_row(board, player, square, k):\n",
+        "                def in_row(x, y, dx, dy):\n",
+        "                  return 0 if board[x, y] != player else 1 + in_row(x + dx, y + dy, dx, dy)\n",
+        "                  return any(in_row(*square, dx, dy) + in_row(*square, -dx, -dy)-1>=k)\n"
+      ],
+      "metadata": {
+        "id": "PlW2l39JM75R"
+      },
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "2.Implement a Game Board using defaultdict using init, new, missing, hash, repr"
+      ],
+      "metadata": {
+        "id": "gahp-xagNAMl"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class Board:\n",
+        "  def __init__(self, width=8, height=8, to_move=None, **kwds):\n",
+        "    self.__dict__.update(width=width, height=height, to_move=to_move, **kwds)\n",
+        "    def new(self, changes: dict, **kwds)->'Board':\n",
+        "      \"Given a dict of {(x, y): contents} changes, return a new Board with the changes.\"\n",
+        "      board = Board(width=self.width, height=self.height, **kwds)\n",
+        "      board.update(self)\n",
+        "      board.update(changes)\n",
+        "      return board\n",
+        "      def __missing__(self, loc):\n",
+        "        x, y = loc\n",
+        "        if 0 <= x < self.width and 0 <= y < self.height:\n",
+        "          return self.empty\n",
+        "        else:\n",
+        "          return self.off\n",
+        "          def __hash__(self):\n",
+        "            return hash(tuple(sorted(self.items()))) + hash(self.to_move)\n",
+        "            def __repr__(self):\n",
+        "              def row(y): return ' '.join(self[x, y] for x in range(self.width))\n",
+        "              return '\\n'.join(map(row, range(self.height))) + '\\n'"
+      ],
+      "metadata": {
+        "id": "rdtpybF2NC-O"
+      },
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "3.Implement random_player(game,state) and player(search_algorithm)\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "BUJVkRpkNIiH"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def random_player(game, state):\n",
+        "  return random.choice(list(game.actions(state)))\n",
+        "  def player(search_algorithm):\n",
+        "    return lambda game, state: search_algorithm(game, state)[1]"
+      ],
+      "metadata": {
+        "id": "cz9bLHQKNjO1"
+      },
+      "execution_count": 12,
+      "outputs": []
+    }
+  ]
+}
