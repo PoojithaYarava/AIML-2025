@@ -3,3 +3,9 @@
 # [lab-02](https://colab.research.google.com/drive/1uD66YCm4oag6DpRK9_m1UG4iayhJvVOz#scrollTo=Q9jjdc9RJ5Ck)-Implement AI Search
 # [lab-03](https://colab.research.google.com/drive/1G5bYFjmWnHs1rrN8BBYkGVYdeyqd0qdl#scrollTo=gEpWNSc5Ms4x )-Implement the AI Game Statergy
 # [lab-04]()-Implement Linear Regression using Boston Housing Data
+# [Lab 05]: Implement Logistic Regression using Titanic Ship Data
+# [Lab 06]: Implement K-Nearest Neighbor Classification using Classified Manufacturing Dataset
+# [Lab 07]: Implement Support Vector Machine using Breast Cancer Data
+# [Lab 08]: Implement Decision Tree Classifier using Lending Club Data
+# [Lab 09]: Implement Random Forest Ensemble Classifier using Lending Club Data
+# [Lab 10]: Implement K-Means Clustering using Iris Data
