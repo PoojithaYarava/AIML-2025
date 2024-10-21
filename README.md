@@ -6,6 +6,6 @@
 # [Lab 05](https://colab.research.google.com/drive/1ou3n7yDuNpiDNVvwO-xnrbvGaQ1R3WkN#scrollTo=jTN_aFG2Asl9): Implement Logistic Regression using Titanic Ship Data
 # [Lab 06](https://colab.research.google.com/drive/1nCeMFw2PXvpOplk3i3p3DK5_xP0D8rdF#scrollTo=qpVtC5DqIQ8W): Implement K-Nearest Neighbor Classification using Classified Manufacturing Dataset
 # [Lab 07](https://colab.research.google.com/drive/1jiYFX1gpjH1qtsf43ek-6CH85Hf4Odn1#scrollTo=p5XS0u9U8WgB): Implement Support Vector Machine using Breast Cancer Data
-# [Lab 08](): Implement Decision Tree Classifier using Lending Club Data
+# [Lab 08](https://colab.research.google.com/drive/1eMK-sE2XJ41j7FVZOw35cvS6N1F7kRH9#scrollTo=j308fSbMLYRY): Implement Decision Tree Classifier using Lending Club Data
 # [Lab 09](): Implement Random Forest Ensemble Classifier using Lending Club Data
 # [Lab 10](): Implement K-Means Clustering using Iris Data
